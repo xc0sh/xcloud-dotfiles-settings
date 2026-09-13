@@ -8,7 +8,7 @@ import qs.CustomTheme
 FloatingWindow {
     id: root
     visible: false
-    title: "ML4W Dotfiles Settings"
+    title: "xCloud Dotfiles Settings"
     implicitWidth: 900
     implicitHeight: 600
 
@@ -25,14 +25,14 @@ FloatingWindow {
     color: Theme.background 
 
     // Absolute path to your script to prevent system PATH issues
-    property string scriptPath: Quickshell.env("HOME") + "/.local/bin/ml4w-dotfiles-settings"
+    property string scriptPath: Quickshell.env("HOME") + "/.local/bin/xcloud-dotfiles-settings"
     
     property var settingsData: []
     property int selectedGroupIndex: 0
     
     // Load and parse the JSON configuration on startup
     Process {
-        command: ["bash", "-c", "cat ~/.config/ml4w-dotfiles-settings/" + root.profile + "/settings.json 2>&1"]
+        command: ["bash", "-c", "cat ~/.config/xcloud-dotfiles-settings/" + root.profile + "/settings.json 2>&1"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {

@@ -1,6 +1,8 @@
-# ML4W Dotfiles Settings
+# xCloud Dotfiles Settings
 
-A powerful, interactive Bash utility to manage and toggle dotfile configurations. Built with [Gum](https://github.com/charmbracelet/gum), it provides a beautiful terminal UI to easily configure your system settings by overwriting files or safely replacing specific values.
+A powerful, interactive Bash utility to manage and toggle dotfile configurations. Built with [Gum](https://github.com/charmbracelet/gum), it provides a beautiful terminal UI to easily configure your system settings by overwriting files or safely replacing specific values. Also ships with a [Quickshell](https://quickshell.org/) GUI on top of the same profile format.
+
+This is a personal fork of [mylinuxforwork/ml4w-dotfiles-settings](https://github.com/mylinuxforwork/ml4w-dotfiles-settings), rebranded and maintained independently by [xCloud](https://xcloud.gg). See [CREDITS.md](CREDITS.md) for full upstream attribution. It is the settings app used by [xc0sh/dotfiles](https://github.com/xc0sh/dotfiles), whose live profile lives at `~/.config/xcloud-dotfiles-settings/gg.xcloud.dotfiles/settings.json`.
 
 ## ✨ Features
 
@@ -22,50 +24,52 @@ Ensure you have the following installed on your system:
 * `gum` (A tool for glamorous shell scripts)
 * `awk`
 
+All four are already in [xc0sh/dotfiles](https://github.com/xc0sh/dotfiles)'s `setup/dependencies/packages` list.
+
 ## 🚀 Installation
 
 Clone the repository and install it globally using `make` (all distros):
 
 ```bash
-git clone https://github.com/yourusername/ml4w-dotfiles-settings.git
-cd ml4w-dotfiles-settings
-sudo make install
+git clone https://github.com/xc0sh/xcloud-dotfiles-settings.git
+cd xcloud-dotfiles-settings
+make install
 ```
 
-Or copy the following command into your terminal to install all dependencies and the ML4W Dotfiles Settings in one step (supporting Arch, Fedora & openSuse Tumbleweed):
+Or copy the following command into your terminal to install all dependencies and xCloud Dotfiles Settings in one step (supporting Arch, Fedora & openSUSE Tumbleweed):
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/mylinuxforwork/ml4w-dotfiles-settings/main/setup.sh)
+bash <(curl -s https://raw.githubusercontent.com/xc0sh/xcloud-dotfiles-settings/main/setup.sh)
 ```
 
 To uninstall:
 
 ```bash
-sudo make uninstall
+make uninstall
 ```
 
 ## 🛠️ Usage
 
-The application requires a profile to run. Settings for the profile are stored in `~/.config/ml4w-dotfiles-settings/<profile_name>/settings.json`.
+The application requires a profile to run. Settings for the profile are stored in `~/.config/xcloud-dotfiles-settings/<profile_name>/settings.json`. xCloud's own profile ID is `gg.xcloud.dotfiles`.
 
 ```bash
-# Start the interactive menu for a specific profile
-ml4w-dotfiles-settings myprofile
+# Start the interactive menu for xCloud's profile
+xcloud-dotfiles-settings gg.xcloud.dotfiles
 
 # Create a new profile with the demo configuration
-ml4w-dotfiles-settings --create myprofile
+xcloud-dotfiles-settings --create myprofile
 
 # Run in test mode (simulates changes without modifying files)
-ml4w-dotfiles-settings --test myprofile
+xcloud-dotfiles-settings --test gg.xcloud.dotfiles
 
 # Set a value directly via CLI (bypasses the UI)
-ml4w-dotfiles-settings --set --id toggle_dock --value false myprofile
+xcloud-dotfiles-settings --set --id toggle_dock --value false gg.xcloud.dotfiles
 
 # Get a current value directly via CLI (Outputs raw string, perfect for piping/variables)
-ml4w-dotfiles-settings --get --id toggle_dock myprofile
+xcloud-dotfiles-settings --get --id toggle_dock gg.xcloud.dotfiles
 
 # Show help menu
-ml4w-dotfiles-settings --help
+xcloud-dotfiles-settings --help
 
 ```
 
@@ -109,11 +113,11 @@ The UI and logic are entirely driven by a `settings.json` file located in your p
                 "name": "Select Waybar Theme",
                 "id": "theme_folder",
                 "instructions": "Choose your theme folder:",
-                "folder": "~/.config/ml4w/settings/waybar_themes",
-                "file": "~/.config/ml4w/settings/waybar_theme",
+                "folder": "~/.config/xcloud/settings/waybar_themes",
+                "file": "~/.config/xcloud/settings/waybar_theme",
                 "type": "folders",
                 "mode": "overwrite",
-                "default": "glass-theme",
+                "default": "xcloud-glass-center",
                 "post_command": "~/.config/waybar/launch.sh > /dev/null 2>&1 &"
             }
         ]
@@ -174,27 +178,31 @@ The UI and logic are entirely driven by a `settings.json` file located in your p
 
 ## ✨ Quickshell UI
 
-The ML4W Dotfiles Settings is shoipped with a Quickshell (https://quickshell.org/) based UI.
+xCloud Dotfiles Settings ships with a [Quickshell](https://quickshell.org/)-based UI on top of the same profile format.
 
-```
+```bash
 # Start Quickshell environment
-PROFILE="com.ml4w.dotfiles" qs -p $HOME/.local/share/ml4w-dotfiles-settings/quickshell &
+PROFILE="gg.xcloud.dotfiles" qs -p $HOME/.local/share/xcloud-dotfiles-settings/quickshell &
 ```
 
 ## Toggle Settings Window
-```
-qs -p $HOME/.local/share/ml4w-dotfiles-settings/quickshell ipc call settings toggle  
+```bash
+qs -p $HOME/.local/share/xcloud-dotfiles-settings/quickshell ipc call settings toggle
 ```
 
 ### Matugen Config
 
-```
-[templates.ml4w_dotfiles_settings]
+```toml
+[templates.xcloud_dotfiles_settings]
 input_path  = "./templates/colors.json"
-output_path = "~/.local/share/ml4w-dotfiles-settings/colors/colors.json"
+output_path = "~/.local/share/xcloud-dotfiles-settings/colors/colors.json"
 ```
 
 ### Reload Theme
+```bash
+qs -p $HOME/.local/share/xcloud-dotfiles-settings/quickshell ipc call theme-manager reload
 ```
-qs -p $HOME/.local/share/ml4w-dotfiles-settings/quickshell ipc call theme-manager reload
-```
+
+## 🤝 Contributing
+
+The bash logic lives in `lib/utils.sh` (settings get/apply logic shared by the CLI menu and direct `--get`/`--set` calls). The Quickshell UI lives in `lib/quickshell/` (`SettingsApp/SettingsWindow.qml` renders the same `settings.json` profile the CLI reads; `CustomTheme/Theme.qml` mirrors the Material 3 color-property pattern used by [xc0sh/dotfiles](https://github.com/xc0sh/dotfiles)'s own Quickshell shell, fed from the same matugen-generated `colors.json`).

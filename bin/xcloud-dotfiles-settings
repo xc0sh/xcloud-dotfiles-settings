@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 # Paths and variables
-DEV_DIR="/ml4w-dotfiles-settings/bin"
+DEV_DIR="/xcloud-dotfiles-settings/bin"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 if [[ "$SCRIPT_DIR" == *"$DEV_DIR"* ]]; then
-    LIB_DIR="$HOME/Projects/ml4w-dotfiles-settings/lib"
+    LIB_DIR="$HOME/Projects/xcloud-dotfiles-settings/lib"
     echo
     echo ":: Running in dev environment"
 else
-    LIB_DIR="$HOME/.local/share/ml4w-dotfiles-settings"
+    LIB_DIR="$HOME/.local/share/xcloud-dotfiles-settings"
 fi
 
-CONFIG_DIR="$HOME/.config/ml4w-dotfiles-settings"
+CONFIG_DIR="$HOME/.config/xcloud-dotfiles-settings"
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LIB_FILE="$LIB_DIR/utils.sh"
 DEMO_FILE="$APP_DIR/demo/settings.json"
@@ -35,7 +35,7 @@ fi
 while [[ $# -gt 0 ]]; do
     case $1 in
         --help)
-            echo "Usage: ml4w-dotfiles-settings [OPTIONS] [PROFILE]"
+            echo "Usage: xcloud-dotfiles-settings [OPTIONS] [PROFILE]"
             echo "Options:"
             echo "  --test <profile>                           Start script in test mode (no files modified)"
             echo "  --create <profile>                         Create a profile with the demo setup"
@@ -202,7 +202,7 @@ fi
 # Main Gum UI Loop (Groups)
 while true; do
     clear
-    gum style --foreground 212 --border double --border-foreground 212 --padding "0 1" " ml4w Dotfiles Settings - Profile: $PROFILE "
+    gum style --foreground 212 --border double --border-foreground 212 --padding "0 1" " xCloud Dotfiles Settings - Profile: $PROFILE "
     
     # Extract available groups
     groups=$(jq -r '.[].group' "$SETTINGS_FILE")

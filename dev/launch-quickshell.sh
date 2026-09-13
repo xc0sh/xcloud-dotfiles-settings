@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-PROFILE="com.ml4w.dotfiles" qs -p $HOME/Projects/ml4w-dotfiles-settings/lib/quickshell
+PROFILE="gg.xcloud.dotfiles" qs -p $HOME/Projects/xcloud-dotfiles-settings/lib/quickshell

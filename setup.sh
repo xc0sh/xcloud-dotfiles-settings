@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ML4W Dotfiles Settings Bootstrap Script
+# xCloud Dotfiles Settings Bootstrap Script
 set -e
 
 # --- Colors ---
@@ -16,13 +16,13 @@ success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 error() { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 
-info "Starting ML4W Dotfiles Settings Setup..."
+info "Starting xCloud Dotfiles Settings Setup..."
 
 # 1. Distro Detection by Binary (as requested)
 if command -v pacman &> /dev/null; then
     DISTRO="arch"
     info "Arch Linux detected. Installing base dependencies..."
-    sudo pacman -S --needed --noconfirm git make jq awk gum
+    sudo pacman -S --needed --noconfirm git make jq gawk gum
 elif command -v dnf &> /dev/null; then
     DISTRO="fedora"
     info "Fedora detected. Installing base dependencies..."
@@ -32,18 +32,18 @@ elif command -v zypper &> /dev/null; then
     info "openSUSE detected. Installing base dependencies..."
     sudo zypper install -y git make jq awk gum
 else
-    error "Unsupported distribution. Please install git, make, wak, gum, and jq manually."
+    error "Unsupported distribution. Please install git, make, awk, gum, and jq manually."
 fi
 
 # 2. Prepare Temporary Folder
-TEMP_DIR=$(mktemp -d -t ml4w-dotfiles-settings-XXXXXX)
-info "Cloning ML4W Dotfiles Settings into $TEMP_DIR..."
+TEMP_DIR=$(mktemp -d -t xcloud-dotfiles-settings-XXXXXX)
+info "Cloning xCloud Dotfiles Settings into $TEMP_DIR..."
 
 # 3. Clone and Install the App
-git clone --depth=1 https://github.com/mylinuxforwork/ml4w-dotfiles-settings.git "$TEMP_DIR"
+git clone --depth=1 https://github.com/xc0sh/xcloud-dotfiles-settings.git "$TEMP_DIR"
 cd "$TEMP_DIR"
 
-info "Installing ML4W Dotfiles Settings to ~/.local/bin..."
+info "Installing xCloud Dotfiles Settings to ~/.local/bin..."
 make install
 
 # 4. Ensure ~/.local/bin is in PATH for this session

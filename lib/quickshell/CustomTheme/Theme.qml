@@ -63,7 +63,7 @@ QtObject {
 
     property var themeReader: Process {
         id: reader
-        command: ["cat", Quickshell.env("HOME") + "/.local/share/ml4w-dotfiles-settings/colors/colors.json"]
+        command: ["cat", Quickshell.env("HOME") + "/.local/share/xcloud-dotfiles-settings/colors/colors.json"]
         
         // REQUIRED: Quickshell needs this to parse the binary stream into text
         stdout: StdioCollector {
@@ -94,6 +94,9 @@ QtObject {
         reader.running = true;
     }
 
-    // Load the JSON colors automatically when Quickshell starts
-    // Component.onCompleted: reloadTheme()
+    // Load the JSON colors automatically when Quickshell starts. Safe even
+    // before colors.json exists (e.g. first run before matugen has ever
+    // generated a theme): the process handler above already no-ops on
+    // empty output.
+    Component.onCompleted: reloadTheme()
 }
