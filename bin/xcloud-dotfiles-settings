@@ -4,7 +4,7 @@
 DEV_DIR="/xcloud-dotfiles-settings/bin"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 if [[ "$SCRIPT_DIR" == *"$DEV_DIR"* ]]; then
-    LIB_DIR="$HOME/Projects/xcloud-dotfiles-settings/lib"
+    LIB_DIR="$SCRIPT_DIR/../lib"
     echo
     echo ":: Running in dev environment"
 else
@@ -12,9 +12,8 @@ else
 fi
 
 CONFIG_DIR="$HOME/.config/xcloud-dotfiles-settings"
-APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LIB_FILE="$LIB_DIR/utils.sh"
-DEMO_FILE="$APP_DIR/demo/settings.json"
+DEMO_FILE="$LIB_DIR/demo/settings.json"
 
 DRY_RUN=0
 PROFILE=""
@@ -93,8 +92,15 @@ if [[ "$ACTION" == "create" ]]; then
         echo "Error: Profile name required for --create."
         exit 1
     fi
+    if [[ ! -f "$DEMO_FILE" ]]; then
+        echo "Error: Demo settings file not found at $DEMO_FILE"
+        exit 1
+    fi
     mkdir -p "$CONFIG_DIR/$CREATE_PROFILE"
-    cp "$DEMO_FILE" "$CONFIG_DIR/$CREATE_PROFILE/settings.json"
+    if ! cp "$DEMO_FILE" "$CONFIG_DIR/$CREATE_PROFILE/settings.json"; then
+        echo "Error: Failed to create profile '$CREATE_PROFILE'."
+        exit 1
+    fi
     echo "Profile '$CREATE_PROFILE' successfully created."
     exit 0
 fi
@@ -168,7 +174,6 @@ if [[ "$ACTION" == "set" || "$ACTION" == "get" ]]; then
         
         # Execute post_command in the background if it exists
         if [[ -n "$post_command" && $DRY_RUN -eq 0 ]]; then
-            # eval "$post_command &"
             nohup bash -c "$post_command" > /dev/null 2>&1 &
             disown
         elif [[ -n "$post_command" && $DRY_RUN -eq 1 ]]; then
@@ -374,7 +379,8 @@ while true; do
                     
                     # Execute post_command in the background if it exists
                     if [[ -n "$post_command" ]]; then
-                        eval "$post_command &"
+                        nohup bash -c "$post_command" > /dev/null 2>&1 &
+                        disown
                     fi
                 else
                     if [[ -n "$post_command" ]]; then
